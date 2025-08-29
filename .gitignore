@@ -1,0 +1,52 @@
+﻿# Visual Studio
+.vs/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Build results
+[Bb]in/
+[Oo]bj/
+[Dd]ebug/
+[Rr]elease/
+
+# NuGet
+*.nupkg
+packages/
+*.nuget.props
+project.lock.json
+project.fragment.lock.json
+
+# Test results
+TestResults/
+*.trx
+
+# Others
+*.pdb
+*.cache
+*.log
+*.tmp
+*.dbmdl
+*.bak
+*.old
+
+# Rider / ReSharper
+_ReSharper*/
+*.DotSettings.user
+
+# OS-specific
+.DS_Store
+Thumbs.db
+
+# C# build tools
+*.exe
+*.dll
+*.mdb
+*.xml
+*.json
+
+# Local history / backup
+*.orig
+*.swp
+*.swo
