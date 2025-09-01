@@ -5,13 +5,13 @@ namespace MooGameRefactorProject.Services
 {
     public class ConsoleService
     {
-        public string GetUserName()
+        public string? GetUserName()
         {
             Console.WriteLine("Enter your user name: \n");
             return Console.ReadLine();
         }
 
-        public string GetUserInput(string prompt)
+        public string? GetUserInput(string prompt)
         {
             Console.Write(prompt);
             return Console.ReadLine();

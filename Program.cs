@@ -1,6 +1,6 @@
-﻿using MooGameRefactorProject.GameLogic;
+﻿using Microsoft.Extensions.DependencyInjection;
+using MooGameRefactorProject.GameLogic;
 using MooGameRefactorProject.Services;
-using MooGameRefactorProject.Models;
 
 namespace MooGame
 {
@@ -8,12 +8,21 @@ namespace MooGame
     {
         public static void Main(string[] args)
         {
-            ConsoleService consoleService = new ConsoleService();
-            GameManager gameManager = new GameManager();
-            IFileHandler fileHandler = new FileHandler();
-            IFileService fileService = new FileService("results.txt", fileHandler);
+            var services = new ServiceCollection();
 
-            MooGame mooGame = new MooGame(consoleService, gameManager, fileService);
+            // Registro de dependencias
+            services.AddSingleton<ConsoleService>();
+            services.AddSingleton<IRandomProvider, SystemRandomProvider>();
+            services.AddSingleton<GameManager>();
+            services.AddSingleton<IFileHandler, FileHandler>();
+            services.AddSingleton<IFileService>(provider =>
+                new FileService("results.txt", provider.GetRequiredService<IFileHandler>()));
+            services.AddSingleton<MooGame>();
+
+            var serviceProvider = services.BuildServiceProvider();
+
+            // Ejecutar juego
+            var mooGame = serviceProvider.GetRequiredService<MooGame>();
             mooGame.Run();
         }
     }

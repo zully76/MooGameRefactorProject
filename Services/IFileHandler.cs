@@ -1,18 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace MooGameRefactorProject.Services
 {
     public interface IFileHandler
-
     {
-        bool Exists(string Path);
+        bool Exists(string path);
         string[] ReadAllLines(string path);
-        void WriteAllLines(string Path, IEnumerable<string> lines);
+        void WriteAllLines(string path, IEnumerable<string> lines);
         void AppendLine(string path, string line);
-
     }
 }

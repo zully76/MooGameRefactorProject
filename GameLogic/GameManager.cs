@@ -1,54 +1,56 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 
 namespace MooGameRefactorProject.GameLogic
 {
     public class GameManager
     {
+        private readonly IRandomProvider _rng;
+
+        // 👇 Ahora recibe la dependencia por constructor
+        public GameManager(IRandomProvider rng)
+        {
+            _rng = rng;
+        }
+
         public string GenerateNumber()
         {
-            Random randomNumberGenerator = new Random();
-            string correctNumber = "";
-            for (int i = 0; i < 4; i++)
+            string correctNumber = string.Empty;
+
+            while (correctNumber.Length < 4)
             {
-                int randomNumber = randomNumberGenerator.Next(10);
-                string randomDigit = "" + randomNumber;
-                while (correctNumber.Contains(randomDigit))
+                int randomNumber = _rng.Next(10); // usamos la interfaz
+                char digit = (char)('0' + randomNumber);
+
+                if (!correctNumber.Contains(digit))
                 {
-                    randomNumber = randomNumberGenerator.Next(10);
-                    randomDigit = "" + randomNumber;
+                    correctNumber += digit;
                 }
-                correctNumber = correctNumber + randomDigit;
             }
+
             return correctNumber;
         }
 
         public string CheckGuess(string correctNumber, string attempt)
         {
-            int cows = 0;
-            int bulls = 0;
+            // protección contra null o input corto
+            attempt = (attempt ?? string.Empty).PadRight(4).Substring(0, 4);
 
-            attempt += "    "; // Add spaces to handle attempts shorter than 4 digits
+            int bulls = 0;
+            int cows = 0;
 
             for (int i = 0; i < 4; i++)
             {
-                for (int j = 0; j < 4; j++)
+                if (attempt[i] == correctNumber[i])
                 {
-                    if (correctNumber[i] == attempt[j])
-                    {
-                        if (i == j)
-                        {
-                            bulls++;
-                        }
-                        else
-                        {
-                            cows++;
-                        }
-                    }
+                    bulls++;
+                }
+                else if (correctNumber.Contains(attempt[i]))
+                {
+                    cows++;
                 }
             }
 
-            return "BBBB".Substring(0, bulls) + "," + "CCCC".Substring(0, cows);
+            return new string('B', bulls) + "," + new string('C', cows);
         }
     }
 }

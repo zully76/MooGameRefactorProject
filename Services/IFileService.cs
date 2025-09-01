@@ -7,6 +7,8 @@ namespace MooGameRefactorProject.Services
     {
         void SaveResult(string playerName, int attempts);
         List<PlayerData> ReadPlayerResults();
-        void ShowPlayerTopList();
+
+        // Nuevo: devolvemos las líneas ya formateadas para que la UI las imprima
+        List<string> GetTopListLines();
     }
 }
