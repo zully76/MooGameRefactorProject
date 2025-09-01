@@ -1,7 +1,7 @@
-﻿using MooGameRefactorProject.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using MooGameRefactorProject.Models;
 
 namespace MooGameRefactorProject.Services
 {
@@ -22,8 +22,8 @@ namespace MooGameRefactorProject.Services
         {
             var lines = _fileHandler.ReadAllLines(_filePath).ToList();
 
-            // busca línea existente exacta por nombre (case-sensitive aquí para no duplicar por formato exacto)
-            var existingLine = lines.FirstOrDefault(line => line.StartsWith(playerName + Delimiter, StringComparison.Ordinal));
+            var existingLine = lines.FirstOrDefault(
+                line => line.StartsWith(playerName + Delimiter, StringComparison.Ordinal));
 
             if (existingLine != null)
             {
@@ -55,15 +55,23 @@ namespace MooGameRefactorProject.Services
 
             foreach (var line in lines)
             {
-                if (string.IsNullOrWhiteSpace(line)) continue;
+                if (string.IsNullOrWhiteSpace(line))
+                {
+                    continue;
+                }
 
                 var parts = line.Split(new[] { Delimiter }, StringSplitOptions.None);
-                if (parts.Length < 2) continue;
+                if (parts.Length < 2)
+                {
+                    continue;
+                }
 
                 string playerName = parts[0];
-                if (!int.TryParse(parts[1], out int attempts)) continue;
+                if (!int.TryParse(parts[1], out int attempts))
+                {
+                    continue;
+                }
 
-                // Unificar por nombre ignorando mayúsculas/minúsculas
                 var existingPlayer = playerResults.FirstOrDefault(
                     p => p.Name.Equals(playerName, StringComparison.OrdinalIgnoreCase));
 
@@ -91,15 +99,18 @@ namespace MooGameRefactorProject.Services
                 return output;
             }
 
-            // ordenar por promedio (menor es mejor)
-            playerResults.Sort((a, b) => a.CalculateAverageAttempts().CompareTo(b.CalculateAverageAttempts()));
+            playerResults.Sort((a, b) =>
+                a.CalculateAverageAttempts().CompareTo(b.CalculateAverageAttempts()));
 
             output.Add("Player      games average");
+
             foreach (var player in playerResults)
             {
-                // usa formato con cultura actual para el decimal (ej. 4,50 en sv-SE)
-                output.Add(string.Format("{0,-9}{1,5:D}{2,9:F2}",
-                    player.Name, player.NumberOfGames, player.CalculateAverageAttempts()));
+                output.Add(string.Format(
+                    "{0,-9}{1,5:D}{2,9:F2}",
+                    player.Name,
+                    player.NumberOfGames,
+                    player.CalculateAverageAttempts()));
             }
 
             return output;

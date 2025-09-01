@@ -4,6 +4,13 @@ using MooGameRefactorProject.Services;
 
 namespace MooGame
 {
+
+    /// <summary>
+    /// Console loop: orchestrates game rounds and delegates logic/persistence to services.
+    /// </summary>
+
+
+
     public class MooGame
     {
         private readonly ConsoleService _consoleService;

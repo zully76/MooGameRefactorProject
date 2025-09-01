@@ -2,11 +2,15 @@
 
 namespace MooGameRefactorProject.GameLogic
 {
+    /// <summary>
+    /// Encapsulates Moo rules: generates a 4-unique-digit secret and evaluates Bulls/Cows.
+    /// </summary>
+
+
     public class GameManager
     {
         private readonly IRandomProvider _rng;
 
-        // 👇 Ahora recibe la dependencia por constructor
         public GameManager(IRandomProvider rng)
         {
             _rng = rng;
@@ -18,7 +22,7 @@ namespace MooGameRefactorProject.GameLogic
 
             while (correctNumber.Length < 4)
             {
-                int randomNumber = _rng.Next(10); // usamos la interfaz
+                int randomNumber = _rng.Next(10);
                 char digit = (char)('0' + randomNumber);
 
                 if (!correctNumber.Contains(digit))
@@ -32,7 +36,6 @@ namespace MooGameRefactorProject.GameLogic
 
         public string CheckGuess(string correctNumber, string attempt)
         {
-            // protección contra null o input corto
             attempt = (attempt ?? string.Empty).PadRight(4).Substring(0, 4);
 
             int bulls = 0;

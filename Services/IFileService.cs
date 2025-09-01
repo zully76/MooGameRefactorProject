@@ -8,7 +8,10 @@ namespace MooGameRefactorProject.Services
         void SaveResult(string playerName, int attempts);
         List<PlayerData> ReadPlayerResults();
 
-        // Nuevo: devolvemos las líneas ya formateadas para que la UI las imprima
+        /// <summary>
+        /// Returns pre-formatted leaderboard lines; UI is responsible for printing.
+        /// </summary>
+        /// 
         List<string> GetTopListLines();
     }
 }

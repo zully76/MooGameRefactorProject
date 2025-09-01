@@ -2,6 +2,11 @@
 
 namespace MooGameRefactorProject.Models
 {
+
+    /// <summary>
+    /// Tracks per-player stats; equality is case-insensitive by Name.
+    /// </summary>
+    /// 
     public sealed class PlayerData : IEquatable<PlayerData>
     {
         public string Name { get; }
