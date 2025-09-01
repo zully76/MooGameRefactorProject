@@ -1,48 +1,45 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MooGameRefactorProject.Models
 {
-    public class PlayerData
+    public sealed class PlayerData : IEquatable<PlayerData>
     {
-        public string Name { get; private set; }
+        public string Name { get; }
         public int NumberOfGames { get; private set; }
         public int TotalAttempts { get; private set; }
 
         public PlayerData(string name, int attempts)
         {
-            if(name == null) throw new ArgumentNullException(nameof(name));
-            this.Name = name;
+            if (string.IsNullOrWhiteSpace(name))
+                throw new ArgumentException("Name cannot be empty.", nameof(name));
+
+            if (attempts < 0)
+                throw new ArgumentOutOfRangeException(nameof(attempts), "Attempts cannot be negative.");
+
+            Name = name;
             NumberOfGames = 1;
             TotalAttempts = attempts;
         }
 
         public void UpdateGame(int attempts)
         {
+            if (attempts < 0)
+                throw new ArgumentOutOfRangeException(nameof(attempts), "Attempts cannot be negative.");
+
             TotalAttempts += attempts;
             NumberOfGames++;
         }
 
         public double CalculateAverageAttempts()
-        {
-            return (double)TotalAttempts / NumberOfGames;
-        }
+            => (double)TotalAttempts / NumberOfGames;
 
-        public override bool Equals(Object? p)
-        {
-            if (p == null || !(p is PlayerData))
-            {
-                return false;
-            }
-            return Name.Equals(((PlayerData)p).Name);
-        }
+        public bool Equals(PlayerData? other)
+            => other is not null &&
+               string.Equals(Name, other.Name, StringComparison.OrdinalIgnoreCase);
+
+        public override bool Equals(object? obj) => Equals(obj as PlayerData);
 
         public override int GetHashCode()
-        {
-            return Name.GetHashCode();
-        }
+            => StringComparer.OrdinalIgnoreCase.GetHashCode(Name);
     }
 }
